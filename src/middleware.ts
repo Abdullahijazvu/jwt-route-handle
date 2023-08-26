@@ -11,7 +11,7 @@ export async function middleware(request: NextRequest){
     console.log("Token", headersToken);
     
     try {
-        if(pathname === "/login" || pathname === "register"){
+        if(pathname === "/login" || pathname === "/register"){
             if(headersToken) return NextResponse.redirect(`${origin}`)
             return NextResponse.next()
         }
@@ -27,7 +27,7 @@ export async function middleware(request: NextRequest){
         console.log("JWT AUTH: ", verifyToken);
 
         if(verifyToken){
-            return NextRequest.next();
+            return NextResponse.next();
         }
 
         return NextResponse.json(

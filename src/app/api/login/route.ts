@@ -10,11 +10,14 @@ export const POST = async(request: Request) => {
         const jwt = await new SignJWT({
             username: body.username,
             role: "admin"
-        }).setProtectedHeader({alg: "HS256", typ: "JWT"}).setIssuedAt().setExpirationTime("1m").sign(new TextEncoder().encode(getJWTSecretKey()))
+        }).setProtectedHeader({alg: "HS256", typ: "JWT"})
+        .setIssuedAt()
+        .setExpirationTime("1m")
+        .sign(new TextEncoder()
+        .encode(getJWTSecretKey()))
 
         console.log(jwt);
         
-
         cookies().set("user-token", jwt, {
             httpOnly: true
         })
