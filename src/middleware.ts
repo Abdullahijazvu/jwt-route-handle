@@ -1,17 +1,18 @@
 import { jwtVerify } from "jose";
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { getJWTSecretKey } from "./lib/auth";
-import next from "next/types";
+import type { NextRequest } from "next/server";
 
-export async function middleware(request: NextRequest){
+export const middleware = async (request: NextRequest) => {
+    
+    const headersToken = request.cookies.get("user-token")?.value
+
     const {pathname, origin} = request.nextUrl
-
-    const headersToken = request.cookies.get("token")?.value
 
     console.log("Token", headersToken);
     
     try {
-        if(pathname === "/login" || pathname === "/register"){
+        if(pathname === "/login"){
             if(headersToken) return NextResponse.redirect(`${origin}`)
             return NextResponse.next()
         }
@@ -36,7 +37,6 @@ export async function middleware(request: NextRequest){
         
     } catch (error) {
         console.log(error);
-           
     }
 }
 export const config = {
